@@ -65,7 +65,7 @@ public class HeroController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            if (barraHeroe.value >= 0)
+            if (barraHeroe.value == 1)
             {
                 Cursor.SetCursor(cursor2, Vector2.zero, CursorMode.ForceSoftware);
                 poderActivado = true;
