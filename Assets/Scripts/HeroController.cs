@@ -48,6 +48,14 @@ public class HeroController : MonoBehaviour
 
     private void Update()
     {
+        if(IsOnAir() && (mRigidBody.velocity.y< 0))
+        {
+            mAnimator.SetBool("IsFalling", true);
+        }
+        else
+        {
+            mAnimator.SetBool("IsFalling", false);
+        }
         if(transform.position.y<-10f )
         {
             barraHeroe.gameObject.SetActive(false);
