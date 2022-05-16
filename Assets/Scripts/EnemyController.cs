@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     public float maxHealth;
     public Slider healthbar;
-
+    public Slider barraHeroe;
     private float mHealth;
 
     private void Start()
@@ -21,7 +21,7 @@ public class EnemyController : MonoBehaviour
             // Hubo una colision
             mHealth -= maxHealth * 0.25f;
             healthbar.value -= 0.25f;
-
+            barraHeroe.value +=0.25f;
 
             if (mHealth <= 0)
             {

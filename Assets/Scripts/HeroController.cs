@@ -1,9 +1,20 @@
 
 using System;
 using UnityEngine;
-
+using UnityEngine.UI;
+using System.Collections;
 public class HeroController : MonoBehaviour
 {
+
+    public Slider barraHeroe;
+    public Texture2D cursor;
+    public Texture2D cursor2;
+    public bool poderActivado = false;
+    public Camera mainCamera;
+    public float speedDash;
+    public GameObject Jugador;
+    public GameObject explosion;
+
     [Header("Movement")]
     public float moveSpeed;
     public float accel;
@@ -14,6 +25,7 @@ public class HeroController : MonoBehaviour
     public float raycastDistance;
     public float jumpForce;
     public float fallMultiplier;
+    public int jumpCount = 0;
 
     [Header("Fire")]
     public GameObject fireball; //prefab
@@ -31,10 +43,36 @@ public class HeroController : MonoBehaviour
         mAnimator = GetComponent<Animator>();
         mSpriteRenderer = GetComponent<SpriteRenderer>();
         mFireballPoint = transform.Find("FireballPoint");
+        Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
+        explosion.SetActive(false);
     }
 
     private void Update()
     {
+        
+        if (Input.GetMouseButton(1) && poderActivado == true)
+        {
+            Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
+            Debug.Log("Cancelar poder");
+            poderActivado = false;
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (barraHeroe.value == 1)
+            {
+                Cursor.SetCursor(cursor2, Vector2.zero, CursorMode.ForceSoftware);
+                poderActivado = true;
+              //  Debug.Log("Poder!");
+            }
+            else
+            {
+                Debug.Log("No poder");
+            }
+        }
+            if (!IsOnAir())
+        {
+            jumpCount = 0;
+        }
         mMovement = Input.GetAxis("Horizontal");
         mAnimator.SetInteger("Move", mMovement == 0f ? 0 : 1);
         
@@ -57,14 +95,52 @@ public class HeroController : MonoBehaviour
         }
 
         bool isOnAir = IsOnAir();
-        if (Input.GetButtonDown("Jump") && !isOnAir)
+        if (Input.GetButtonDown("Jump") && jumpCount< 1)
         {
+            mRigidBody.velocity = new Vector2(mRigidBody.velocity.x, 0);
             Jump();
+            Debug.Log("salto");
         }
 
         if (Input.GetButtonDown("Fire1"))
         {
-            Fire();
+            Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+            if (!poderActivado)
+            {
+                Fire();
+
+            }
+            else if (Input.GetMouseButton(0) && poderActivado == true)
+            {
+                Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
+                Debug.Log("Poder!");
+                barraHeroe.value = 0;
+                if (mousePos.x < transform.position.x)
+                {
+                    transform.rotation = Quaternion.Euler(
+                    0f,
+                    180f,
+                    0f);
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x - 5f, transform.position.y, transform.position.z), speedDash);
+
+                }
+                else
+                {
+                    transform.rotation = Quaternion.Euler(
+                    0f,
+                    0f,
+                    0f
+
+                );
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + 5f, transform.position.y, transform.position.z), speedDash);
+
+                }
+                //Teletransporte();
+
+                poderActivado = false;
+
+            }
         }
     }
 
@@ -96,7 +172,12 @@ public class HeroController : MonoBehaviour
 
     private void Jump()
     {
+        jumpCount += 1;
+
         mRigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        mAnimator.SetBool("IsJumping", true);
+
+
     }
 
     public bool IsOnAir()
@@ -118,16 +199,19 @@ public class HeroController : MonoBehaviour
             rayColor = Color.blue;
         }
         Debug.DrawRay(rayCastOrigin.position, Vector2.down * raycastDistance, rayColor);*/
-
         return !hit;
         //return hit == null ? true : false;
         
     }
     private void Fire()
     {
-        mFireballPoint.GetComponent<ParticleSystem>().Play(); // ejecutamos PS
-        GameObject obj = Instantiate(fireball, mFireballPoint);
-        obj.transform.parent = null;
+        if(!poderActivado)
+        {
+            mFireballPoint.GetComponent<ParticleSystem>().Play(); // ejecutamos PS
+            GameObject obj = Instantiate(fireball, mFireballPoint);
+            obj.transform.parent = null;
+        }
+  
         
     }
 
@@ -138,5 +222,23 @@ public class HeroController : MonoBehaviour
             0f,
             0f
         );
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Plataforma")
+        {
+            StartCoroutine("Muerte");
+        }
+    }
+    IEnumerator Muerte()
+    {
+
+        yield return new WaitForSeconds(0.3f);
+
+        Destroy(gameObject);
+        explosion.transform.position = transform.position;
+        explosion.SetActive(true);
+        Debug.Log("destruido");
+        
     }
 }
