@@ -65,7 +65,7 @@ public class HeroController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            if (barraHeroe.value == 1)
+            if (barraHeroe.value >= 0)
             {
                 Cursor.SetCursor(cursor2, Vector2.zero, CursorMode.ForceSoftware);
                 poderActivado = true;
@@ -111,7 +111,6 @@ public class HeroController : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
             if (!poderActivado)
             {
@@ -120,33 +119,9 @@ public class HeroController : MonoBehaviour
             }
             else if (Input.GetMouseButton(0) && poderActivado == true)
             {
-                Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
-                Debug.Log("Poder!");
-                barraHeroe.value = 0;
-                if (mousePos.x < transform.position.x)
-                {
-                    transform.rotation = Quaternion.Euler(
-                    0f,
-                    180f,
-                    0f);
-                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x - 5f, transform.position.y, transform.position.z), speedDash);
-
-                }
-                else
-                {
-                    transform.rotation = Quaternion.Euler(
-                    0f,
-                    0f,
-                    0f
-
-                );
-                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + 5f, transform.position.y, transform.position.z), speedDash);
-
-                }
-                //Teletransporte();
-
-                poderActivado = false;
-
+                //mAnimator.SetBool("IsDashing", true);
+                StartCoroutine("DashScript");
+                
             }
         }
     }
@@ -185,6 +160,43 @@ public class HeroController : MonoBehaviour
         mAnimator.SetBool("IsJumping", true);
 
 
+    }
+    IEnumerator DashScript()
+    {
+        mAnimator.SetBool("IsDashing", true);
+        Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
+
+        yield return new WaitForSeconds(0.2f);
+        Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+        Debug.Log("Poder!");
+        barraHeroe.value = 0;
+        if (mousePos.x < transform.position.x)
+        {
+            transform.rotation = Quaternion.Euler(
+            0f,
+            180f,
+            0f);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x - 5f, transform.position.y, transform.position.z), speedDash);
+            //mAnimator.SetBool("IsDashing", false);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(
+            0f,
+            0f,
+            0f
+
+        );
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + 5f, transform.position.y, transform.position.z), speedDash);
+            //mAnimator.SetBool("IsDashing", false);
+        }
+        //Teletransporte();
+        poderActivado = false;
+
+        yield return new WaitForSeconds(0.3f);
+
+        mAnimator.SetBool("IsDashing", false);
     }
 
     public bool IsOnAir()
