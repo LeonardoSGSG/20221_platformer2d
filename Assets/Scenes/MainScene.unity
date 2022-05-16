@@ -1414,7 +1414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -198.674, y: -117.978}
+  m_AnchoredPosition: {x: -197.05, y: -111.45}
   m_SizeDelta: {x: 1.5142, y: 0.282}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &157601840
@@ -8290,7 +8290,6 @@ Transform:
   m_Children:
   - {fileID: 1064829049}
   - {fileID: 1033782773}
-  - {fileID: 1881089173}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8349,7 +8348,6 @@ MonoBehaviour:
   poderActivado: 0
   mainCamera: {fileID: 519420031}
   speedDash: 500
-  Jugador: {fileID: 1056137677}
   explosion: {fileID: 2102917234}
   moveSpeed: 5
   accel: 2
@@ -18819,15 +18817,15 @@ RectTransform:
   m_GameObject: {fileID: 1881089172}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9340702, y: 0.8187, z: 1}
   m_Children:
   - {fileID: 157601839}
-  m_Father: {fileID: 1056137679}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 198.67, y: 119.58}
+  m_AnchoredPosition: {x: 177.4636, y: 90.77842}
   m_SizeDelta: {x: 423, y: 238}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1881089174

@@ -48,6 +48,14 @@ public class HeroController : MonoBehaviour
 
     private void Update()
     {
+        if(transform.position.y<-10f )
+        {
+            barraHeroe.gameObject.SetActive(false);
+            Destroy(gameObject);
+            explosion.transform.position = transform.position;
+            explosion.SetActive(true);
+            Debug.Log("destruido");
+        }
         barraHeroe.transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, barraHeroe.transform.position.y);   
         if (Input.GetMouseButton(1) && poderActivado == true)
         {
@@ -234,7 +242,7 @@ public class HeroController : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
 
-        Destroy(barraHeroe);
+        barraHeroe.gameObject.SetActive(false);
         Destroy(gameObject);
         explosion.transform.position = transform.position;
         explosion.SetActive(true);
