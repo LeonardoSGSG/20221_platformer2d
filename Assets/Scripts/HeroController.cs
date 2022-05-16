@@ -12,7 +12,6 @@ public class HeroController : MonoBehaviour
     public bool poderActivado = false;
     public Camera mainCamera;
     public float speedDash;
-    public GameObject Jugador;
     public GameObject explosion;
 
     [Header("Movement")]
@@ -49,7 +48,7 @@ public class HeroController : MonoBehaviour
 
     private void Update()
     {
-        
+        barraHeroe.transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, barraHeroe.transform.position.y);   
         if (Input.GetMouseButton(1) && poderActivado == true)
         {
             Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
@@ -235,6 +234,7 @@ public class HeroController : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
 
+        Destroy(barraHeroe);
         Destroy(gameObject);
         explosion.transform.position = transform.position;
         explosion.SetActive(true);
