@@ -7,6 +7,7 @@ public class HeroController : MonoBehaviour
 {
 
     public Slider barraHeroe;
+    public Slider vidaHeroe;
     public Texture2D cursor;
     public Texture2D cursor2;
     public bool poderActivado = false;
@@ -256,6 +257,24 @@ public class HeroController : MonoBehaviour
         {
             StartCoroutine("Muerte");
         }
+        if (other.tag == "Ataque")
+        {
+            Debug.Log("Impacto");
+            vidaHeroe.value -= 0.25f;
+
+            if (vidaHeroe.value <= 0)
+            {
+                Debug.Log("murio");
+
+                StartCoroutine("Muerte");
+
+                //healthbar.gameObject.SetActive(false);
+
+            }
+        }
+     //   mHealth -= maxHealth * 0.02f;
+       // healthbar.value -= 0.02f;
+        
     }
     IEnumerator Muerte()
     {
@@ -269,4 +288,5 @@ public class HeroController : MonoBehaviour
         Debug.Log("destruido");
         
     }
+
 }

@@ -8,7 +8,7 @@ public class BringerScript : MonoBehaviour
     public float maxHealth;
     public Slider healthbar;
     public Slider barraHeroe;
-    private float mHealth;
+    public float mHealth;
     private float temp;
     public GameObject Heroe;
     public Animator mAnimator;
@@ -17,6 +17,8 @@ public class BringerScript : MonoBehaviour
     public float speedBoss = 2f;
     private Vector3 posInicial;
     private bool atacando = false;
+    private bool valid = false;
+    public GameObject colAtaque;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,15 +31,77 @@ public class BringerScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        temp += Time.deltaTime;
-        Debug.Log(temp);
-        var step = speedBoss * Time.deltaTime;
+    {            var step = speedBoss * Time.deltaTime;
 
-        if (moverse && !mAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        if (Heroe != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, Heroe.transform.position, step);
-            if (transform.position.x > Heroe.transform.position.x)
+            temp += Time.deltaTime;
+            //  Debug.Log(temp);
+             step = speedBoss * Time.deltaTime;
+            if (!mAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            {
+                colAtaque.SetActive(false);
+            }
+            if (moverse && !mAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            {
+                transform.position = Vector3.MoveTowards(transform.position, Heroe.transform.position, step);
+                if (transform.position.x > Heroe.transform.position.x)
+                {
+                    transform.rotation = Quaternion.Euler(
+                        0f,
+                        0f,
+                        0f
+                    );
+                }
+                else if (transform.position.x < Heroe.transform.position.x)
+
+                {
+                    transform.rotation = Quaternion.Euler(
+                        0f,
+                        180f,
+                        0f
+                    );
+                }
+            }
+            if (Vector3.Distance(transform.position, Heroe.transform.position) <= 10f && Heroe != null)
+            {
+                healthbar.gameObject.SetActive(true);
+                // Debug.Log("dentro del area");
+                mAnimator.SetBool("Caminando", true);
+                moverse = true;
+            }
+            else
+            {
+                healthbar.gameObject.SetActive(false);
+
+                mAnimator.SetBool("Caminando", false);
+                moverse = false;
+                transform.position = Vector3.MoveTowards(transform.position, posInicial, step);
+
+            }
+            if (Vector3.Distance(transform.position, Heroe.transform.position) <= 3f && temp >= 3f && !valid)
+            {
+                valid = true;
+                Debug.Log("ataca");
+                mAnimator.SetBool("Atacando", true);
+                Invoke("funcA", 0.5f);
+
+
+            }
+            else
+            {
+                mAnimator.SetBool("Atacando", false);
+                atacando = false;
+                
+
+            }
+        }
+        else
+        {
+
+            moverse = false;
+            transform.position = Vector3.MoveTowards(transform.position, posInicial, step);
+            if (transform.position.x > posInicial.x)
             {
                 transform.rotation = Quaternion.Euler(
                     0f,
@@ -45,7 +109,7 @@ public class BringerScript : MonoBehaviour
                     0f
                 );
             }
-            else if (transform.position.x < Heroe.transform.position.x)
+            else if (transform.position.x < posInicial.x)
 
             {
                 transform.rotation = Quaternion.Euler(
@@ -54,40 +118,27 @@ public class BringerScript : MonoBehaviour
                     0f
                 );
             }
-        }
-        if(Vector3.Distance(transform.position, Heroe.transform.position)<= 10f)
-        {
-            healthbar.gameObject.SetActive(true);
-            Debug.Log("dentro del area");
-            mAnimator.SetBool("Caminando", true);
-            moverse = true;
-        }
-        else
-        {
-            healthbar.gameObject.SetActive(false);
+            if(transform.position!= posInicial)
+            {
+                mAnimator.SetBool("Caminando", true);
 
-            mAnimator.SetBool("Caminando", false);
-            moverse = false;
-            transform.position = Vector3.MoveTowards(transform.position, posInicial, step);
+            }
+            if(transform.position == posInicial)
+            {
+                mAnimator.SetBool("Caminando", false);
 
+            }
         }
-        if (Vector3.Distance(transform.position, Heroe.transform.position) <= 3f && temp>=3f)
-        {
 
-            Debug.Log("ataca");
-            mAnimator.SetBool("Atacando", true);
-            moverse = true;
-            atacando = true;
-            temp = 0f;
-        }
-        else
-        {
-            mAnimator.SetBool("Atacando", false);
-            atacando = false;
-
-
-        }
+    }
+    private void funcA()
+    {
         
+        moverse = true;
+        atacando = true;
+        temp = 0f;
+        colAtaque.SetActive(true);
+        valid = false;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

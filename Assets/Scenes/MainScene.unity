@@ -8277,9 +8277,11 @@ MonoBehaviour:
   maxHealth: 10
   healthbar: {fileID: 959523464}
   barraHeroe: {fileID: 157601840}
+  mHealth: 0
   Heroe: {fileID: 1056137677}
   mAnimator: {fileID: 0}
   speedBoss: 2
+  colAtaque: {fileID: 2059853144}
 --- !u!1 &1047102453
 GameObject:
   m_ObjectHideFlags: 0
@@ -8618,6 +8620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barraHeroe: {fileID: 157601840}
+  vidaHeroe: {fileID: 1813802841}
   cursor: {fileID: 2800000, guid: 44a99ee545fd8ba46a452b12c1f9378b, type: 3}
   cursor2: {fileID: 2800000, guid: 1e1ecf843f705b34ab304dff88b037c1, type: 3}
   poderActivado: 0
@@ -30883,6 +30886,11 @@ RectTransform:
   m_AnchoredPosition: {x: -200.31, y: -117.75}
   m_SizeDelta: {x: 1.5142, y: 0.282}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2059853144 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1256311771697078092, guid: f9ea941324d4b458fa45867049ba3080, type: 3}
+  m_PrefabInstance: {fileID: 507310314}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2066359925
 GameObject:
   m_ObjectHideFlags: 0
