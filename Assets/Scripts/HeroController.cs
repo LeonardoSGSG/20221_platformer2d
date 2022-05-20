@@ -71,7 +71,7 @@ public class HeroController : MonoBehaviour
             Debug.Log("Cancelar poder");
             poderActivado = false;
         }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (barraHeroe.value == 1)
             {

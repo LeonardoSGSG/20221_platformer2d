@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fireball
   - Plataforma
+  - Boss
   layers:
   - Default
   - TransparentFX
